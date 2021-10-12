@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign-up to ShowBox</title>
+    {% load static %}
+    {% include  "adminHeader.html" %}
+    <script>
+         $(document).ready(function () {
+         $("#submit").click(function (e) {
+
+
+                $("#formdiv input").each(function () {
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+            })
+    })
+    </script>
+    <style>
+         body, html {
+            height: 100%;
+        }
+        #main {
+
+            background-image: url("{% static "login.jpg" %}");
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 700px;
+            box-shadow: inset 100px 80px 250px #0e171e, inset -100px -80px 250px #0e171e;
+        }
+
+        #formdiv {
+            padding: 25px;
+
+            width: 450px;
+            height: 550px;
+            background-color: white;
+            opacity: 95%;
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid" id="main">
+    <div align="center"><h1><b>ShowBox</b></h1></div>
+    <div style="height: 50px"></div>
+
+        <div style="width: 100%;position: relative" align="center">
+
+            <div id="formdiv"  >
+                <h3 >Create your Account</h3>
+                <form id="loginform" action="addUser" method="post">
+                    {% csrf_token %}
+                    <div class="form-group" align="left">
+                        Name
+                        <input type="text" class="form-control " name="name" >
+                    </div>
+                    <div class="form-group" align="left">
+                        Email
+                        <input class="form-control" type="text" name="email">
+                    </div>
+                    <div class="form-group" align="left">
+                        Mobile
+                        <input class="form-control" type="text" name="mobile" maxlength="10">
+                    </div>
+                    <div class="form-group" align="left">
+                        Password
+                        <input class="form-control" type="password" name="password">
+                    </div>
+
+                    <div class="form-group" >
+                        <input type="submit" id="submit" value="Create Account" class="btn btn-dark form-control">
+                        <br>
+                        <br>
+                        <h6>{{ ar.msg }}</h6>
+                    </div>
+                </form>
+
+            </div>
+
+    </div>
+</div>
+</body>
+</html>

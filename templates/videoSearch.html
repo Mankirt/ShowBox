@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Videos</title>
+    {% include "userHeader.html" %}
+    <style>
+        body, html {
+            background-color: #0e171e;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div> {% include "userHead.html" %}</div>
+    <div align="center">
+        <div style="width:85vw; margin-top: 4%">
+            {% if flag == 0 %}
+                <div style="color: white;padding-top: 7%"><h5>No Videos Found</h5></div>
+
+            {% else %}
+
+                {% for movie in ar %}
+                    <div style="display:inline-block;color: white;padding: 1%">
+                        <a href="coverPage?q={{ movie.vid }}"><img
+                            src="../static/media/{{ movie.image }}"
+                            class="rounded-lg "
+                            style="width: 278px; height: 180px;margin: 5px;"></a>
+                        <div><h6>{{ movie.title }}</h6></div>
+                    </div>
+
+
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+</div>
+</body>
+</html>

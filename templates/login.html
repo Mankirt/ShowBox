@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login to ShowBox</title>
+    {% load static %}
+    {% include  "adminHeader.html" %}
+    <script src="{% static "jquery-3.5.0.min.js" %}"></script>
+    <script src="{% static "dist/jquery.validate.min.js" %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#loginform").validate();
+        })
+    </script>
+
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        #main {
+
+            background-image: url("{% static "login.jpg" %}");
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 600px;
+            min-width: 400px;
+            box-shadow: inset 100px 80px 250px #0e171e, inset -100px -80px 250px #0e171e;
+        }
+
+
+        #formdiv {
+            padding: 25px;
+
+            width: 350px;
+            height: 480px;
+            background-color: white;
+            opacity: 95%;
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid" id="main">
+    <div align="center" style="color: white; "><h1><b>ShowBox</b></h1></div>
+    <div style="height: 50px"></div>
+
+    <div style="width: 100%;position: relative" align="center">
+
+        <div id="formdiv">
+            <h3>Sign-In</h3>
+            <form id="loginform" action="signin" method="post">
+                {% csrf_token %}
+                <div class="form-group" align="left">
+                    Email
+                    <input type="text" data-rule-required="true" data-msg-required="Please enter your email"
+                           data-rule-email="true" data-msg-email="Please enter your email" class="form-control "
+                           name="textbox1">
+                </div>
+                <div class="form-group" align="left">
+                    Password
+                    <input class="form-control" type="password" data-rule-required="true"
+                           data-msg-required="Please enter your password &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" name="textbox2">
+                    <a href="forgotPassword">Forgot Password</a>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Sign-In" class="btn btn-dark form-control">
+                    <h6 style="color: red;margin-top: 10px">{{ mr.msg2 }}</h6>
+                </div>
+            </form>
+            <p style="padding: 5px;text-align:center"><h6>Do not have an account?</h6></p>
+            <div class="form-group">
+                <input type="submit" value="Create an Account" onclick="window.location.href='/signup'"
+                       class="btn btn-dark form-control">
+                <br>
+                <br>
+                <h6 style="color: deepskyblue">{{ ar.msg }}</h6>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+</html>

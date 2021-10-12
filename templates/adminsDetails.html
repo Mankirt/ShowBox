@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admins</title>
+    {% include "adminHeader.html" %}
+    {% load static %}
+    <script src="{% static "jquery-3.5.0.min.js" %}"></script>
+    <script src="{% static "dist/jquery.validate.min.js" %}"></script>
+    <script>
+        function addAdmin() {
+            var a = document.getElementById("email").value;
+            var b = document.getElementById("name").value;
+            var c = document.getElementById("mobile").value;
+            var d = document.getElementById("password").value;
+            var e = document.getElementById("type").value;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("msg").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("POST", "addAdmin", true);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhttp.send("email=" + a + "&name=" + b + "&mobile=" + c + "&password=" + d + "&type=" + e);
+        }
+
+        $(document).ready(function () {
+            $("#search").keyup(function () {
+                var x = $(this).val().toLowerCase();
+
+                $('#admintable tr').filter(function () {
+                    $(this).toggle($(this).children(".name").text().toLowerCase().indexOf(x) > -1)
+                })
+            })
+
+            $("#check").click(function (e) {
+
+
+                $("#formdiv input").each(function () {
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv" style="opacity: 97%">
+        {% include "adminTemplate.html" %}
+        <div align="center" style="margin: 10px 30px">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h3 style="text-align: left;">Admins Details</h3>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="search"
+                           style="display:inline;width: 60%; margin-right: 5%" placeholder="Search admins">
+                    {% if self.type == "SuperAdmin" %}
+                        <input class="btn-info btn" type="submit" value="Add New Admin" data-toggle="modal"
+                               data-target="#exampleModalCenter" style="display: inline;margin: 0">
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div style="width: 85%; margin-top: 20px">
+
+                <table class="table">
+                    <tr>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Type</th>
+                    </tr>
+                    <tbody id="admintable">
+                    <tr>
+                        <td>{{ self.email }}</td>
+                        <td class="name">{{ self.name }}</td>
+                        <td>{{ self.mobile }}</td>
+                        <td>{{ self.type }}</td>
+                    </tr>
+                    {% for element in ar %}
+                        <tr>
+                            <td>{{ element.email }}</td>
+                            <td class="name">{{ element.name }}</td>
+                            <td>{{ element.mobile }}</td>
+                            <td>{{ element.type }}</td>
+                            {% if self.type == "SuperAdmin" %}
+                                {% if element.type != "Blocked" %}
+                                    <td><a class="btn btn-outline-dark"
+                                           href="changeStatus?q=Block&z={{ element.email }}">&nbsp&nbspBlock&nbsp&nbsp&nbsp</a>
+                                    </td>
+                                {% else %}
+                                    <td><a class="btn btn-outline-info"
+                                           href="changeStatus?q=Unblock&z={{ element.email }}">Unblock</a>
+                                    </td>
+
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black">Add New Admin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="formdiv">
+
+
+                    {% csrf_token %}
+                    <div class="form-group">
+                        Email
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="form-group">
+                        Name
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                        Mobile
+                        <input type="text" class="form-control" id="mobile" maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        Password
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="form-group">
+                        Type
+                        <select class="form-control" id="type">
+                            <option>Admin</option>
+                            <option>SuperAdmin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" id="check" value="Add Admin" onclick="addAdmin()" class="btn btn-success">
+                    </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <div id="msg" class="mr-auto" style="color: #0f78af"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

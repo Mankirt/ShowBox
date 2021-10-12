@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genres</title>
+    {% load static %}
+    {% include "adminHeader.html" %}
+</head>
+<body>
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv">
+        {% include "adminTemplate.html" %}
+        <div class="row" style="width: 100%">
+            <div class="col-sm-2">
+                {% include "genreTemplate.html" %}
+            </div>
+            <div class="col-sm-10" align="left">
+                <div style="overflow: auto;width: 100%; min-height: 600px;min-width: 450px">
+                    <table class="table">
+                        <tr>
+                            <th>Genre</th>
+                            <th>Description</th>
+                        </tr>
+                        {% for element in ar %}
+                            <tr>
+                                <td>{{ element.genre }}</td>
+                                <td>{{ element.desc }}</td>
+                                <td><a href="editGenre?q={{ element.genre }}"><img src="{% static "edit2.png" %}" style="width: 30px;height: 30px"></a></td>
+                                <td><a href="deleteGenre?q={{ element.genre }}"><img src="{% static "del.png" %}" style="width: 30px;height: 30px"></a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Videos</title>
+    {% include "adminHeader.html" %}
+    <style>
+        .form-group {
+            margin-right: 50px;
+
+        }
+    </style>
+<script>
+    $(document).ready(function () {
+         $("#submit").click(function (e) {
+
+
+                $("#formdiv input").each(function () {
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+            })
+    })
+</script>
+
+</head>
+<body>
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv" style="opacity: 97%">
+        {% include "adminTemplate.html" %}
+        <div class="row " style="width: 100%">
+            <div class="col-sm-2">
+                {% include "movieTemplate.html" %}
+            </div>
+            <div class="col-sm-10" style="padding-top: 2%">
+                <div style="width: 100%; min-height: 600px;min-width: 450px;">
+                    <form action="addMovie" id="formdiv" method="post" enctype="multipart/form-data">
+                        <div  class="row">
+                            <div class="col-sm-6" align="left">
+
+                                {% csrf_token %}
+                                Title
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="textbox1">
+                                </div>
+                                Genre
+                                <div class="form-group">
+                                    <select class="form-control" name="textbox2">
+                                        {% for element in gr %}
+                                            <option>{{ element.genre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                Category
+                                <div class="form-group">
+                                    <select class="form-control" name="catname">
+                                        {% for element in cr %}
+                                            <option>{{ element.catname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                Cast
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="textbox3">
+                                </div>
+                                Director
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="textbox4">
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-6 formcolumn" align="left">
+                                Description
+                                <div class="form-group">
+                                    <input type="text" name="textbox7" class="form-control">
+                                </div>
+
+                                Link
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="textbox5">
+                                </div>
+                                Rating
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="textbox6">
+                                </div>
+
+                                <div class="form-group">
+                                    Cover Image<br>
+                                    <input type="file" name="image">
+                                </div>
+                                <div class="form-group">
+                                    Background Imange<br>
+                                    <input type="file" name="bgimage">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input id="submit" type="submit" value="Add Movie" class="btn btn-success" style="margin-top: 3%">
+                        </div>
+                        <div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

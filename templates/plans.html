@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plans</title>
+    {% include "adminHeader.html" %}
+    {% load static %}
+    <script src="{% static "jquery-3.5.0.min.js" %}"></script>
+    <script src="{% static "dist/jquery.validate.min.js" %}"></script>
+    <script>
+
+        function hide() {
+            var x = document.getElementById("editdiv");
+            x.style.display = "none";
+        }
+
+        function editplan(value1, value2) {
+            var x = document.getElementById("editdiv");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                var pid = document.getElementById("pidi");
+                pid.value = value1;
+                var timeperiod = document.getElementById("timeperiodi");
+                timeperiod.value = value2;
+
+
+            } else {
+                x.style.display = "none";
+            }
+
+
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#check").click(function (e) {
+
+
+                $("#formdiv input").each(function () {
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+            })
+
+        })
+    </script>
+</head>
+<body onload="hide()">
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv" style="opacity: 97%">
+        {% include "adminTemplate.html" %}
+        <div align="center">
+            <div style="width: 80%;">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Time Period</th>
+                        <th>Price</th>
+                    </tr>
+                    {% for element in ar %}
+                        <tr>
+                            <td>{{ element.id }}</td>
+                            <td>{{ element.timeperiod }}</td>
+                            <td>{{ element.price }}</td>
+                            <td>
+                                <button class="btn-dark btn"
+                                        onclick="editplan('{{ element.id }}','{{ element.timeperiod }}')">Edit
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div id="editdiv" style="width: 50%;">
+                    <form action="editplan" id="formdiv" method="post">
+                        {% csrf_token %}
+                        ID
+                        <input type="text" class="form-control" id="pidi" name="pid" readonly
+                               style="text-align: center">
+                        Time period
+                        <input type="text" class="form-control" id="timeperiodi" name="timeperiod" readonly
+                               style="text-align: center"
+                        >
+                        Price
+                        <input type="text" class="form-control" id="price" name="price">
+                        <br>
+                        <input type="submit" id="check" class="btn btn-info">
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

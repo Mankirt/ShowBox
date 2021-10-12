@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>{{ ar.title }}</title>
+    {% include "userHeader.html" %}
+    <script src="{% static "js/bootstrap.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <style>
+        body, html {
+
+            height: 100%;
+            min-height: 500px;
+            min-width: 700px;
+            background-color: #000;
+        }
+
+        #bgimagediv {
+            content: '';
+            background-image: url("../static/media/{{ ar.bgimage }}");
+            width: 100%;
+            height: 80vh;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            min-height: 500px;
+            min-width: 408px;
+
+
+        }
+
+        #cover {
+            content: '';
+            width: 100%;
+            height: 80vh;
+            position: absolute;
+            padding: 0;
+
+            z-index: 1;
+
+        }
+
+
+        #infodiv {
+            color: white;
+            z-index: 3;
+            padding: 4%;
+            width: 850px;
+            height: 80vh;
+            position: absolute;
+            min-height: 500px;
+            min-width: 600px;
+
+
+        }
+
+        td {
+            height: 50px;
+            width: 300px;
+        }
+
+        #backgrounddiv {
+            width: 100%;
+            height: 80vh;
+            position: relative;
+            min-width: 700px;
+            min-height: 500px;
+
+
+        }
+
+        #shadowdiv {
+            content: '';
+            width: 100%;
+            height: 80vh;
+            position: absolute;
+            z-index: 2;
+            box-shadow: inset 50vw 10px 500px #000, inset 0px -125px 500px #000;
+            min-width: 700px;
+            min-height: 500px;
+
+        }
+
+        #main {
+            height: 80vh;
+            width: 100%;
+            min-width: 700px;
+            min-height: 500px;
+            padding: 0;
+
+        }
+
+        #rating {
+        {% if revnature == "Positive" %}
+            color: mediumspringgreen;
+        {% elif revnature == "Negative" %}
+            color: orangered;
+        {% else %}
+            color: white;
+        {% endif %}
+        }
+
+
+    </style>
+</head>
+<body>
+{% include "userHead.html" %}
+<div class="container-fluid" id="main" style="">
+
+    <div id="backgrounddiv">
+        <div id="cover" class="row" align="center">
+            <div class="col-sm-4"></div>
+
+            <div id="bgimagediv" class="col-sm-8" style="padding: 0">
+            </div>
+
+        </div>
+        <div id="shadowdiv"></div>
+        <div id="infodiv" align="left">
+            <div>
+                <h1 >{{ ar.title }}</h1>
+                <br>
+                <h6>{{ ar.desc }}</h6>
+                <br>
+                <input type="submit" value="Play" onclick="window.location.href='/playVid?q={{ ar.path }}'"
+                       class="btn btn-dark">
+                {% if t == "0" %}
+                    <input type="submit" value="Add to Watch List"
+                           onclick="window.location.href='/addToWatchList?vid={{ ar.vid }}'" class="btn btn-dark">
+                {% else %}
+                    <input type="submit" value="Remove from Watch List"
+                           onclick="window.location.href='/removeFromWatchList?vid={{ ar.vid }}'" class="btn btn-dark">
+                {% endif %}
+                <br>
+                <br>
+                <table style="color: #8199a5">
+                    <tr>
+                        <td>Director</td>
+                        <td>{{ ar.director }}</td>
+                    </tr>
+                    <tr>
+                        <td>Starring</td>
+                        <td>{{ ar.cast }}</td>
+                    </tr>
+                    <tr>
+                        <td>Genre</td>
+                        <td>{{ ar.genre }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rating</td>
+                        <td>{{ ar.rating }}/10</td>
+                    </tr>
+                    <tr>
+                        <td>User Rating</td>
+                        <td id="rating">{{ revnature }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% if er == "Web Series" %}
+
+        <div style="width: 100%; z-index: 3;margin-top: 5%" align="center">
+            <div style="width: 85vw;" align="left">
+                <h3 style="color: white;">Episodes</h3>
+
+                {% for epi in ep %}
+                    <div style="width: 100%;margin: 8px 0; background-color: #0e171e" class="row rounded">
+                        <div class="col-sm-3" style="padding: 0">
+                            <img src="../static/media/{{ epi.ephoto }}"
+                                 class="img-fluid rounded">
+                        </div>
+                        <div class="col-sm-9" style="color: white; padding: 2%">
+                            <div>
+                                <h3>{{ epi.eno }}. {{ epi.ename }} <input type="submit" value="Play"
+                                                                          onclick="window.location.href='/playVid?q={{ epi.epath }}'"
+                                                                          class="btn btn-dark"></h3>
+                                {{ epi.edesc }}
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+                <div style="height: 50px;content: ''"></div>
+            </div>
+        </div>
+    {% endif %}
+    <div style="width: 100%;color: white;z-index: 3" align="center">
+
+        <div style="width: 85vw">
+            <h4 style="text-align: left">User Reviews</h4>
+            <div style="width: 90%">
+                <form action="addReview" method="post">
+                    {% csrf_token %}
+                    {% if userrev == '' %}
+                        <h5 style="text-align: left;margin-top: 25px">Write a review</h5>
+                    {% else %}
+                        <h5 style="text-align: left;margin-top: 25px">Your review</h5>
+                    {% endif %}
+                    <textarea rows="3   " style="width: 100%;" name="review" class="rounded">{{ userrev }}</textarea>
+                    {% if userrev == '' %}
+                        <div align="right"><input type="submit" class="btn btn-info"></div>
+                    {% else %}
+                        <div align="right">
+                            <input type="submit" class="btn btn-outline-info" value="Edit">
+                            <a style="margin: 0" href="deleteReview?q={{ ar.vid }}" class="btn-outline-danger btn">Delete</a>
+                        </div>
+                    {% endif %}
+                    <input type="hidden" value="{{ ar.vid }}" name="vid">
+                </form>
+
+
+
+
+                {% for rev in rr %}
+                    <div style="margin: 30px 0">
+                        <textarea rows="3" style="width: 100%;" readonly
+                                  class="rounded">{{ rev.review }}   -({{ rev.name }})
+                           </textarea>
+                        <div align="right">
+                            {% if rev.nature == 1 %}
+                                <i class="fas fa-thumbs-up" style="color: green" size="20px"></i>
+                            {% elif rev.nature == -1 %}
+                                <i class="fas fa-thumbs-down" style="color: red" ></i>
+                            {% else %}
+                                <i class="fas fa-meh-blank" style="color: white"></i>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <div style="height: 50px;content: ''"></div>
+</div>
+</body>
+</html>
+

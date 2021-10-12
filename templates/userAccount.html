@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ ar.name }}'s Account</title>
+    {% load static %}
+    {% include "userHeader.html" %}
+    <script src="{% static "jquery-3.5.0.min.js" %}"></script>
+    <script src="{% static "dist/jquery.validate.min.js" %}"></script>
+    <style>
+        body, html {
+            background-color: #0e171e;
+            width: 100%;
+        }
+    </style>
+    <script>
+
+        function changeUserPassword() {
+            var a = document.getElementById("old").value;
+            var b = document.getElementById("new").value;
+            var c = document.getElementById("confirmnewpassword").value;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("msg").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "changeUserPassword?old=" + a + "&new=" + b+"&cnf="+c, true);
+            xhttp.send();
+        }
+
+
+        function editUserDetails() {
+            var name = document.getElementById("name").value;
+            var mobile = document.getElementById("mobile").value;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("msg1").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "editUserDetails?name=" + name + "&mobile=" + mobile, true);
+            xhttp.send();
+        }
+
+        function hide() {
+            var x = document.getElementById("editdiv");
+            x.style.display = "none";
+        }
+
+        function showdiv() {
+            var x = document.getElementById("editdiv");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        $(document).ready(function () {
+            $("#editdiv").validate();
+        })
+
+    </script>
+</head>
+<body onload="hide()">
+{% include "userHead.html" %}
+<div>
+
+    <div align="center">
+        <div class="row" style="color: white">
+
+            <div align="left" class="col-sm-6" style="padding: 9%; ">
+                <h3 style="margin-top: 2%">{{ ar.name }}'s details</h3>
+
+                E-Mail: {{ ar.email }}<br>
+                Name: {{ ar.name }}<br>
+                Mobile: {{ ar.mobile }}<br>
+                Type: {{ ar.type }}<br>
+                <br>
+
+                <input type="button" class="btn btn-info" value="Edit Details" onclick="showdiv()">
+                <input type="button" class="btn btn-info" value="Change Password" data-toggle="modal"
+                       data-target="#exampleModalCenter"><br><br>
+                <a class="btn btn-outline-danger" href="logout">Logout</a>
+
+
+            </div>
+            <div id="editdiv" class="col-sm-6" style="padding: 10%" align="left" >
+
+                <div class="form-group">
+                    Name
+                    <input value="{{ ar.name }}" type="text" class="form-control" id="name" data-rule-required="true">
+                </div>
+
+                <div class="form-group">
+                    Mobile
+                    <input value="{{ ar.mobile }}" type="text" class="form-control" id="mobile" data-rule-number="true"
+                           data-rule-reuqired="true">
+                </div>
+                <div class="form-group">
+                    <button id="submit" type="button" onclick="editUserDetails()" class="btn btn-outline-info">Submit
+                    </button>
+                </div>
+                <div id="msg1" style="color: #0f78af"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black">Change your password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="form-group">
+                    New Password
+                    <input type="password" id="new" class="form-control">
+                </div>
+                <div class="form-group">
+                    Re-Enter New Password
+                    <input type="password" id="confirmnewpassword" class="form-control">
+                </div>
+                <div class="form-group">
+                    Old Password
+                    <input type="password" id="old" class="form-control">
+                </div>
+                <div class="form-group">
+
+                    <input type="button" value="Change Password" onclick="changeUserPassword()" class="btn btn-info">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div id="msg" class="mr-auto" style="color: #0f78af"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

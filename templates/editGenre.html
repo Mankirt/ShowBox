@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Genre</title>
+    {% include "adminHeader.html" %}
+    <script>
+        $(document).ready(function () {
+            $("#check").click(function (e) {
+
+
+                $("#formdiv input").each(function () {
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv">
+        {% include "adminTemplate.html" %}
+        <div class="row" style="width: 100%">
+            <div class="col-sm-2">
+                {% include "genreTemplate.html" %}
+            </div>
+            <div class="col-sm-10" align="left">
+                <div style="overflow: auto;width: 60%; min-height: 600px;min-width: 450px;margin-top: 1.5%">
+
+                    <form action="genreEditted" id="formdiv" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            Genre
+                            <input type="text" readonly value="{{ dr.genre }}" class="form-control" name="genre">
+                        </div>
+                        <div class="form-group" align="left">
+                            Description
+                            <input type="text" value="{{ dr.desc }}" class="form-control" name="desc">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Edit" id="check" class="btn btn-success">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

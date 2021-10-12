@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ShowBox</title>
+    {% load static %}
+    {% include "adminHeader.html" %}
+    <style>
+        #top {
+            background-color: #1a242e;
+            position: sticky;
+            z-index: 20;
+            top: 0;
+            overflow: hidden;
+            height: 10vh;
+            width: 100vw;
+            min-height: 70px;
+        }
+
+        #main1 {
+            background-image: url("{% static "adminLogin.jpg" %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 70vh;
+            width: 100vw;
+            min-height: 500px;
+
+        }
+
+        #main2 {
+            background-image: url("{% static "adminLogin2.jpg" %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 80vh;
+            width: 100vw;
+            min-height: 500px;
+            color: white;
+        }
+
+        .signinbutton {
+            background-color: #0f78af;
+            color: white;
+            width: 150px;
+            height: 50px;
+            font-size: 110%;
+        }
+
+        #signin b {
+            color: white;
+        }
+
+        #signin:hover b {
+            color: dodgerblue;
+        }
+
+    </style>
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div id="top" class="row" >
+        <div align="left" class="col-sm-2" style="padding-left: 3%; padding-top: 1%">
+            <h2 style="color: white"><b>ShowBox</b></h2>
+        </div>
+        <div class="col-sm-8"></div>
+        <div id="signin" class="col-sm-2" align="right" style="padding-right: 3%;padding-top: 1% ">
+            <h3><a href="login"><b>Sign In</b></a></h3>
+        </div>
+    </div>
+    <div id="main1" class="row" align="left">
+        <div class="col-sm-6" style="color:white;">
+            <div style="padding: 20%">
+                <h1>Welcome to ShowBox</h1>
+                <p><h5>Join ShowBox to watch latest Web-Series, Movies and award winning Originals</h5></p><br>
+                <input type="submit" onclick="window.location.href='/login'" class="btn signinbutton"
+                       value="Get Started">
+            </div>
+        </div>
+    </div>
+    <div id="main2" class="row" align="left">
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
+            <div style="padding: 20%">
+                <h1>Great Entertainment</h1>
+                <p><h5>With your Prime membership, you have access to exclusive Amazon Originals, blockbuster Bollywood
+                movies, regional movies and more.</h5></p><br>
+                <input type="submit" onclick="window.location.href='/login'" class="btn signinbutton"
+                       value="Get Started">
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

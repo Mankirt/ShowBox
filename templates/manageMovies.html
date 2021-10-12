@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Videos</title>
+    {% load static %}
+    <script src="{% static "jquery-3.5.0.min.js" %}"></script>
+    <script src="{% static "dist/jquery.validate.min.js" %}"></script>
+    {% include "adminHeader.html" %}
+    <script>
+        $(document).ready(function () {
+            $("#search").keyup(function () {
+                var x = $(this).val().toLowerCase();
+
+                $('#movietable tr').filter(function () {
+                    $(this).toggle($(this).children(".title").text().toLowerCase().indexOf(x) > -1)
+                })
+            })
+
+
+        })
+    </script>
+
+
+</head>
+<body>
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv">
+        {% include "adminTemplate.html" %}
+        <div class="row " style="width: 100%">
+            <div class="col-sm-2">
+                {% include "movieTemplate.html" %}
+            </div>
+            <div class="col-sm-10" style="overflow:auto;width: 100%;height: 78vh;min-height: 500px;min-width: 500px">
+                <div>
+                    <div align="right" style="padding: 1%;">
+                        <input type="text" placeholder="Search Title" id="search" style="width: 30%"
+                               class="form-control">
+                    </div>
+                    <table class="table" style="text-align: center">
+                        <tr>
+                            <th>Video ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Genre</th>
+                            <th>Cast</th>
+                            <th>Cover</th>
+                            <th>Rating</th>
+
+                        </tr>
+                        <tbody id="movietable">
+                        {% for element in ar %}
+                            <tr>
+                                <td>{{ element.mid }}</td>
+                                <td class="title">{{ element.mname }}</td>
+                                <td>{{ element.catname }}</td>
+                                <td>{{ element.genre }}</td>
+                                <td>{{ element.cast }}</td>
+                                <td><img src="../static/media/{{ element.image }}" style="height: 100px;width: 100px">
+                                </td>
+                                <td>{{ element.rating }}</td>
+                                <td><a href="editMovie?q={{ element.mid }}"><img src="{% static "edit2.png" %}"
+                                                                                 style="width: 30px;height: 30px"></a>
+                                </td>
+
+                                <td><a href="deleteVideo?q={{ element.mid }}"><img src="{% static "del.png" %}" style="width: 30px;height: 30px"></a>
+                                </td>
+                                {% if element.catname == "Web Series" %}
+                                    <td><a href="manageEpisodes?q={{ element.mid }}">Episodes</a></td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

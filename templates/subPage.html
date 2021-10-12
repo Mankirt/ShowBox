@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>Subscribe</title>
+      <script src="{% static "jquery-3.5.0.min.js" %}"></script>
+    <script src="{% static "dist/jquery.validate.min.js" %}"></script>
+    {% include "userHeader.html" %}
+
+    <script src="{% static "js/bootstrap.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#check").click(function (e) {
+
+
+                $("#formdiv .input").each(function () {
+
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+            })
+            $("#formdiv").validate();
+        })
+    </script>
+    <style>
+        body, html {
+
+            height: 100%;
+            min-height: 500px;
+            min-width: 700px;
+            background-color: #0e171e;
+        }
+
+        #bgimagediv {
+            content: '';
+            background-image: url("../static/subcover1.jpg");
+            width: 100%;
+            height: 80vh;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            min-height: 500px;
+            min-width: 408px;
+
+
+        }
+
+        #cover {
+            content: '';
+            width: 100%;
+            height: 80vh;
+            position: absolute;
+            padding: 0;
+
+            z-index: 1;
+
+        }
+
+
+        #infodiv {
+            color: white;
+            z-index: 3;
+            padding: 4%;
+            width: 850px;
+            height: 90vh;
+            position: absolute;
+            min-height: 500px;
+            min-width: 600px;
+
+
+        }
+
+        td {
+            height: 50px;
+            width: 300px;
+        }
+
+        #backgrounddiv {
+            width: 100%;
+            height: 90vh;
+            position: relative;
+            min-width: 700px;
+            min-height: 500px;
+
+
+        }
+
+        #shadowdiv {
+            content: '';
+            width: 100%;
+            height: 90vh;
+            position: absolute;
+            z-index: 2;
+            box-shadow: inset 57vw 10px 500px #000000, inset 0px -270px 500px #000000;
+            min-width: 700px;
+            min-height: 500px;
+
+        }
+
+        #main {
+            height: 90vh;
+            width: 100%;
+            min-width: 700px;
+            min-height: 500px;
+            padding: 0;
+
+        }
+
+        .signinbutton {
+            background-color: #0f78af;
+            color: white;
+
+            height: 50px;
+            font-size: 110%;
+        }
+    </style>
+
+</head>
+<body>
+{% include "userHead.html" %}
+<div class="container-fluid" id="main" style="">
+
+    <div id="backgrounddiv">
+        <div id="cover" class="row" align="center">
+            <div class="col-sm-5"></div>
+
+            <div id="bgimagediv" class="col-sm-7" style="padding: 0">
+            </div>
+
+        </div>
+        <div id="shadowdiv"></div>
+        <div id="infodiv" align="left">
+            <div>
+                <h1>Welcome to ShowBox</h1>
+                <span style="font-size: 25px"> Join ShowBox to watch the latest movies, TV shows and award-winning Originals </span>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div>
+                    <input type="submit" data-toggle="modal" data-target="#paymentmodal" class="btn signinbutton"
+                           value="Get 3 Months of ShowBox at 349">
+                    <br>
+                    <br>
+                    <span>or, You can also</span> <br>
+                    <br>
+                    <input type="submit" data-toggle="modal" data-target="#paymentmodal" class="btn signinbutton"
+                           value="Get a Year of ShowBox at 999">
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="paymentmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black">Make Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+
+                <form action="payment" method="post" id="formdiv">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        Card Number
+                        <input type="text" name="cardno" maxlength="12" class="form-control" data-rule-required="true">
+                    </div>
+                    <div class="form-group" style="display:inline-block;">
+                        Card Expiry Date (MM/YY)
+                        <input type="text" name="expiry" maxlength="5" class="form-control" data-rule-required="true">
+                    </div>
+                    <div class="form-group" style="display: inline-block">
+                        Card Security Code
+                        <input type="text" name="code" class="form-control" maxlength="3" data-rule-required="true">
+                    </div>
+                    <div class="form-group">
+                        Select your plan
+                        <select class="form-control" name="plan">
+                            {% for element in ar %}
+                                <option value="{{ element.id }}">{{ element.timeperiod }} -
+                                    Rs. {{ element.price }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <input type="submit" value="Make Payment" id="check" class="btn btn-info">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div id="msg" class="mr-auto" style="color: red"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

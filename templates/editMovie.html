@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Movie</title>
+    {% include "adminHeader.html" %}
+    <style>
+        .form-group {
+            margin-right: 50px;
+
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#imagediv").hide();
+            $("#bgimagediv").hide();
+            $("#cb1").click(function () {
+                $("#imagediv").show();
+                $("#image").addClass('change');
+
+                if (!$(this).is(':checked')) {
+                    $("#image").removeClass('change');
+                    $("#imagediv").hide();
+                }
+
+            })
+
+            $("#cb2").click(function () {
+                $("#bgimagediv").show();
+                 $("#bgimage").addClass('change');
+                if (!$(this).is(':checked')) {
+                    $("#bgimage").removeClass('change');
+                    $("#bgimagediv").hide();
+                }
+            })
+             $("#check").click(function () {
+                 var x;
+                    if ($("#cb2").is(':checked') && $("#cb1").is(':checked')) {
+                        x= "both";
+                    }
+                    else if ($("#cb2").is(':checked') && (!$("#cb1").is(':checked'))) {
+                       x = "bgimage";
+                    }
+                    else if (!$("#cb2").is(':checked') && ($("#cb1").is(':checked'))) {
+                       x= "image";
+                    }
+                    else if ((!$("#cb2").is(':checked')) && (!$("#cb1").is(':checked'))) {
+                       x = "none";
+                    }
+                    $("#status1").val(x);
+
+                })
+
+            $("#check").click(function (e) {
+
+
+                $("#formdiv .change").each(function () {
+                    if ($(this).val() == "") {
+
+
+                        alert("Fill all fields");
+                        $(this).focus();
+
+
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+            })
+
+
+        })
+
+
+    </script>
+
+</head>
+<body>
+
+<div class="container-fluid" id="main" align="center">
+    {% include "adminHead.html" %}
+    <div id="seconddiv" style="opacity: 97%">
+        {% include "adminTemplate.html" %}
+        <div class="row " style="width: 100%">
+            <div class="col-sm-2">
+                {% include "movieTemplate.html" %}
+            </div>
+            <div class="col-sm-10" style="padding-top: 2%">
+                <div style="width: 100%; min-height: 600px;min-width: 450px;">
+
+                    <form action="edittedMovie" id="formdiv" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-sm-6" align="left">
+
+                                {% csrf_token %}
+                                Movie Name
+                                <div class="form-group">
+                                    <input type="text" value="{{ ar.title }}" class="form-control change"
+                                           name="textbox1">
+                                </div>
+                                Genre
+                                <div class="form-group">
+                                    <select class="form-control change" name="textbox2">
+                                        {% for element1 in gr %}
+                                            <option>{{ element1.genre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                Category
+                                <div class="form-group">
+                                    <select class="form-control" name="catname">
+                                        {% for element2 in cr %}
+                                            <option>{{ element2.catname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                Cast
+                                <div class="form-group">
+                                    <input type="text" value="{{ ar.cast }}" class="form-control change"
+                                           name="textbox3">
+                                </div>
+                                Director
+                                <div class="form-group">
+                                    <input type="text" value="{{ ar.director }}" class="form-control change"
+                                           name="textbox4">
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-6 formcolumn" align="left">
+                                Description
+                                <div class="form-group">
+                                    <input type="text" name="textbox7" value="{{ ar.desc }}"
+                                           class="form-control change">
+                                </div>
+
+                                Link
+                                <div class="form-group">
+                                    <input type="text" class="form-control change" value="{{ ar.path }}"
+                                           name="textbox5">
+                                </div>
+                                Rating
+                                <div class="form-group">
+                                    <input type="text" class="form-control change" value="{{ ar.rating }}"
+                                           name="textbox6">
+                                </div>
+
+                                <div>
+                                    <input type="checkbox" id="cb1">
+                                    Change cover image
+                                </div>
+
+                                <div class="form-group" id="imagediv" >
+                                    Cover Image<br>
+                                    <input type="file" name="image" value="noimage" id="image">
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="cb2">
+                                    Change background image
+                                </div>
+                                <div class="form-group" id="bgimagediv">
+                                    Background Image<br>
+                                    <input type="file" name="bgimage" id="bgimage">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Edit Movie" class="btn btn-success" style="margin-top: 3%"
+                                  id="check" >
+                        </div>
+                        <div>
+                            <input type="hidden" value="{{ ar.vid }}" name="vid">
+                            <input type="text" style="display: none" name="status" id="status1">
+
+                            <input type="hidden" value="{{ ar.image }}" name="oldimage">
+                            <input value="{{ ar.bgimage }}" type="hidden" name="oldbg">
+
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
